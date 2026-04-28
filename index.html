@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Ifra 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,400;0,700&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --gold:#FFD700;
+  --rose:#FF1493;
+  --hotpink:#FF69B4;
+  --magenta:#FF00FF;
+  --cyan:#00FFFF;
+  --deep:#0d0015;
+  --purple:#9932CC;
+  --bright:#FF6EC7;
+}
+
+html{scroll-behavior:smooth;scroll-snap-type:y mandatory;}
+body{
+  background:linear-gradient(135deg,#1a0033 0%,#0d0015 50%,#2d0066 100%);
+  font-family:'Quicksand',sans-serif;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ── CURSOR ── */
+#cursor{
+  position:fixed;width:24px;height:24px;
+  background:radial-gradient(circle,#FFD700,#FF1493);
+  border-radius:50%;pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  filter:blur(0.5px);mix-blend-mode:screen;
+  box-shadow:0 0 25px #FFD700, 0 0 15px #FF1493;
+}
+
+/* ── CANVAS ── */
+#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* ── SCROLL INDICATOR ── */
+.scroll-nav{
+  position:fixed;right:1.5rem;top:50%;
+  transform:translateY(-50%);
+  z-index:600;
+  display:flex;flex-direction:column;
+  gap:.8rem;align-items:center;
+}
+.sn-dot{
+  width:11px;height:11px;border-radius:50%;
+  border:2.5px solid rgba(255,215,0,.6);
+  cursor:pointer;transition:all .4s;
+}
+.sn-dot.active{
+  background:var(--gold);
+  box-shadow:0 0 18px var(--gold);
+  border-color:var(--gold);
+  width:14px;height:14px;
+}
+
+/* ── ENVELOPE FIXED POSITION ── */
+.envelope-container{
+  position:fixed;
+  top:2.5rem;
+  left:2.5rem;
+  z-index:800;
+  perspective:1200px;
+  cursor:pointer;
+  opacity:1;
+  transition:opacity 1s ease;
+}
+
+.envelope-container.vanish{
+  opacity:0;
+  pointer-events:none;
+}
+
+.envelope-small{
+  width:300px;
+  height:220px;
+  position:relative;
+  transform-style:preserve-3d;
+  animation:float 4s ease-in-out infinite;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0) rotateX(2deg);}
+  50%{transform:translateY(-15px) rotateX(-2deg);}
+}
+
+.env-body{
+  position:absolute;inset:0;
+  background:linear-gradient(145deg,#FF1493,#FF69B4);
+  border-radius:6px 6px 12px 12px;
+  border:2.5px solid #FFD700;
+  box-shadow:0 30px 80px rgba(255,20,147,.7), 0 0 0 2px rgba(255,215,0,.4), inset 0 2px 8px rgba(255,255,255,.1);
+  overflow:hidden;
+}
+
+.env-body::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(45deg,transparent,transparent 12px,rgba(255,255,255,.06) 12px,rgba(255,255,255,.06) 13px);
+}
+
+.env-left{
+  position:absolute;top:0;left:0;width:50%;height:100%;
+  background:linear-gradient(135deg,#FF1493,#FF69B4);
+  clip-path:polygon(0 0,0 100%,100% 50%);
+}
+
+.env-right{
+  position:absolute;top:0;right:0;width:50%;height:100%;
+  background:linear-gradient(225deg,#FF1493,#FF69B4);
+  clip-path:polygon(100% 0,100% 100%,0 50%);
+}
+
+.env-bottom{
+  position:absolute;bottom:0;left:0;right:0;height:55%;
+  background:linear-gradient(160deg,#FF69B4,#FF1493);
+  clip-path:polygon(0 100%,50% 0,100% 100%);
+  border-top:2.5px solid rgba(255,215,0,.5);
+}
+
+.env-top{
+  position:absolute;top:0;left:0;right:0;
+  height:52%;
+  background:linear-gradient(180deg,#FF1493,#FF69B4);
+  clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:top center;
+  transition:transform 1.3s cubic-bezier(.34,1.56,.64,1);
+  z-index:10;
+  border-bottom:2.5px solid rgba(255,215,0,.5);
+}
+.envelope-small.opening .env-top{
+  transform:rotateX(-200deg) translateY(40px);
+}
+
+.seal{
+  position:absolute;top:32%;left:50%;
+  transform:translate(-50%,-50%);
+  width:58px;height:58px;
+  background:linear-gradient(135deg,#FFD700,#FF00FF,#00FFFF);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;
+  box-shadow:0 0 35px rgba(255,215,0,.9), 0 0 15px rgba(255,0,255,.6);
+  z-index:20;
+  transition:opacity .4s, transform .4s;
+  border:2.5px solid rgba(0,255,255,.8);
+}
+.envelope-small.opening .seal{
+  opacity:0;
+  transform:scale(0);
+}
+
+.envelope-hint{
+  position:absolute;bottom:-50px;
+  left:50%;
+  transform:translateX(-50%);
+  white-space:nowrap;
+  color:rgba(255,215,0,.8);
+  font-size:.85rem;
+  letter-spacing:.2rem;
+  animation:pulse-text 1.6s ease-in-out infinite;
+  font-weight:700;
+  text-transform:uppercase;
+}
+@keyframes pulse-text{0%,100%{opacity:.4;}50%{opacity:1;}}
+
+/* ── SECTIONS ── */
+section{
+  min-height:100vh;
+  scroll-snap-align:start;
+  position:relative;
+  z-index:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:3rem 2rem;
+}
+
+/* SECTION 1 - HAPPY BIRTHDAY */
+#sec-intro{
+  background:linear-gradient(135deg,#1a0066 0%,#4a0080 50%,#0d0015 100%);
+  overflow:hidden;
+}
+
+.intro-center{text-align:center;}
+
+.big-title{
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(3rem,16vw,12rem);
+  line-height:1.1;
+  background:linear-gradient(90deg,#FFD700 0%,#FF1493 25%,#00FFFF 50%,#FF00FF 75%,#FFD700 100%);
+  background-size:300% 300%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:gradShift 5s ease infinite, titleReveal 1.5s .2s cubic-bezier(.34,1.56,.64,1) both;
+  font-weight:700;
+  text-shadow:0 0 40px rgba(255,215,0,.3);
+  filter:drop-shadow(0 0 30px rgba(255,20,147,.4));
+  margin-bottom:1rem;
+}
+@keyframes gradShift{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+@keyframes titleReveal{from{opacity:0;transform:scale(.4)rotate(-20deg);}to{opacity:1;transform:scale(1)rotate(0);}}
+
+.big-subtitle{
+  font-family:'Scheherazade New',serif;
+  font-size:clamp(1.4rem,4vw,2.2rem);
+  color:#FF1493;
+  letter-spacing:.1rem;
+  font-weight:700;
+  margin-bottom:1rem;
+  animation:fadeSlide 1.2s .4s both;
+  text-shadow:0 0 20px rgba(255,20,147,.6);
+}
+
+.intro-jaan{
+  font-family:'Scheherazade New',serif;
+  font-size:clamp(1.1rem,3.5vw,1.8rem);
+  color:#00FFFF;
+  letter-spacing:.1rem;
+  margin-bottom:2rem;
+  animation:fadeSlide 1.2s .6s both;
+  font-weight:600;
+  text-shadow:0 0 25px rgba(0,255,255,.5);
+}
+
+@keyframes fadeSlide{from{opacity:0;transform:translateY(-30px);}to{opacity:1;transform:translateY(0);}}
+
+.hearts-wrap{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.fheart{
+  position:absolute;bottom:-40px;
+  font-size:1.6rem;
+  animation:heartFloat linear infinite;
+  opacity:0;
+}
+@keyframes heartFloat{
+  0%{transform:translateY(0) scale(0);opacity:0;}
+  10%{opacity:1;}
+  90%{opacity:.8;}
+  100%{transform:translateY(-110vh) scale(1.8);opacity:0;}
+}
+
+.scroll-down{
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.4rem;
+  color:rgba(255,215,0,.8);font-size:.95rem;letter-spacing:.25rem;
+  animation:scrollBounce 2s ease-in-out infinite;
+  cursor:pointer;
+  font-weight:700;
+  text-transform:uppercase;
+}
+.scroll-down span{font-size:1.8rem;}
+@keyframes scrollBounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(12px);}}
+
+/* SECTION 2 - WISHES CARDS */
+#sec-wishes{
+  background:linear-gradient(135deg,#1a0066 0%,#0d0015 50%,#4a0080 100%);
+  padding:3rem 1rem;
+}
+
+.sec-title{
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(2.5rem,8vw,4.5rem);
+  text-align:center;
+  background:linear-gradient(90deg,#FFD700,#FF1493,#00FFFF);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:3rem;
+  font-weight:700;
+  text-shadow:0 0 30px rgba(255,215,0,.3);
+}
+
+.wish-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1.5rem;
+  max-width:1000px;
+  width:100%;
+}
+
+.wish-card{
+  background:rgba(255,20,147,.12);
+  border:2px solid rgba(255,215,0,.4);
+  border-radius:24px;
+  padding:2rem 1.6rem;
+  text-align:center;
+  cursor:pointer;
+  transition:transform .3s, box-shadow .3s, border-color .3s;
+  backdrop-filter:blur(15px);
+  position:relative;
+  overflow:hidden;
+}
+
+.wish-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 0%,rgba(255,215,0,.15),transparent 70%);
+  opacity:0;transition:opacity .3s;
+}
+
+.wish-card:hover::before{opacity:1;}
+
+.wish-card:hover{
+  transform:translateY(-12px) scale(1.05);
+  box-shadow:0 30px 80px rgba(255,20,147,.6);
+  border-color:rgba(0,255,255,.9);
+}
+
+.wish-card .wc-emoji{
+  font-size:3rem;display:block;margin-bottom:1rem;
+  animation:spin-slow 3s linear infinite;
+}
+@keyframes spin-slow{0%{transform:rotate(0);}100%{transform:rotate(360deg);}}
+
+.wish-card .wc-title{
+  font-family:'Scheherazade New',serif;
+  font-size:1.3rem;color:#FF1493;
+  margin-bottom:.6rem;
+  font-weight:700;
+}
+
+.wish-card .wc-text{
+  font-size:1rem;color:rgba(255,255,255,.85);
+  line-height:1.9;
+  font-weight:500;
+  font-family:'Scheherazade New',serif;
+}
+
+/* SECTION 3 - FINAL MESSAGE */
+#sec-final{
+  background:linear-gradient(135deg,#4a0080 0%,#1a0066 50%,#0d0015 100%);
+}
+
+.final-box{
+  background:rgba(255,20,147,.15);
+  border:3px solid #FFD700;
+  border-radius:36px;
+  padding:3.5rem 3rem;
+  max-width:750px;width:100%;
+  text-align:center;
+  backdrop-filter:blur(20px);
+  box-shadow:0 35px 120px rgba(255,20,147,.5);
+}
+
+.final-box h2{
+  font-family:'Scheherazade New',serif;
+  font-size:clamp(2.2rem,7vw,3.8rem);
+  background:linear-gradient(90deg,#FFD700,#FF1493,#00FFFF);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:2rem;
+  font-weight:700;
+  line-height:1.3;
+}
+
+.final-box p{
+  font-family:'Scheherazade New',serif;
+  font-size:clamp(1.2rem,3vw,1.9rem);
+  color:#00FFFF;
+  line-height:2.7;
+  margin-bottom:2rem;
+  font-weight:600;
+  text-shadow:0 0 20px rgba(0,255,255,.5);
+}
+
+.final-emojis{
+  font-size:3.5rem;
+  margin-bottom:1.5rem;
+  display:flex;
+  justify-content:center;
+  gap:1.2rem;
+  flex-wrap:wrap;
+  animation:spin 4s linear infinite;
+}
+
+@keyframes spin{
+  0%{transform:rotate(0deg);}
+  100%{transform:rotate(360deg);}
+}
+
+.final-box .special-text{
+  font-family:'Scheherazade New',serif;
+  font-size:clamp(1.5rem,4.5vw,2.2rem);
+  color:#FF00FF;
+  font-weight:700;
+  text-shadow:0 0 25px rgba(255,0,255,.6);
+  margin-top:2rem;
+  letter-spacing:.05rem;
+}
+
+/* ── CONFETTI ── */
+.cp{
+  position:fixed;top:-20px;border-radius:2px;
+  animation:cpFall linear infinite;
+  pointer-events:none;z-index:998;
+}
+@keyframes cpFall{
+  0%{transform:translateY(0) rotate(0);opacity:1;}
+  100%{transform:translateY(110vh) rotate(720deg);opacity:0;}
+}
+
+/* ── FIREWORKS CANVAS ── */
+#fwCanvas{position:fixed;inset:0;z-index:999;pointer-events:none;}
+
+/* ── BALLOON CONTAINER ── */
+#balloons{position:fixed;inset:0;pointer-events:none;z-index:2;overflow:hidden;}
+.bl{
+  position:absolute;bottom:-80px;
+  font-size:2.5rem;
+  animation:blFloat linear infinite;
+  opacity:0;
+}
+@keyframes blFloat{
+  0%{transform:translateY(0)rotate(-5deg);opacity:0;}
+  5%{opacity:1;}
+  95%{opacity:.85;}
+  100%{transform:translateY(-110vh)rotate(5deg);opacity:0;}
+}
+</style>
+</head>
+<body>
+
+<!-- Persistent elements -->
+<div id="cursor"></div>
+<canvas id="bgCanvas"></canvas>
+<canvas id="fwCanvas"></canvas>
+<div id="balloons"></div>
+
+<!-- ENVELOPE (opens once, then disappears) -->
+<div class="envelope-container" id="envelopeContainer" onclick="openEnvelope()">
+  <div class="envelope-small" id="envelope">
+    <div class="env-body"></div>
+    <div class="env-left"></div>
+    <div class="env-right"></div>
+    <div class="env-bottom"></div>
+    <div class="env-top"></div>
+    <div class="seal">💌</div>
+  </div>
+  <div class="envelope-hint">Click to Open</div>
+</div>
+
+<!-- Side scroll nav -->
+<div class="scroll-nav" id="scrollNav"></div>
+
+<!-- ════════════════════════════
+     SECTION 1 — HAPPY BIRTHDAY
+═════════════════════════════ -->
+<section id="sec-intro">
+  <div class="hearts-wrap" id="hearts"></div>
+  <div class="intro-center">
+    <h1 class="big-title">Happy Birthday</h1>
+    <p class="big-subtitle">My Lifeline</p>
+    <p class="intro-jaan">🌸 اِفرا 🌸</p>
+  </div>
+  <div class="scroll-down" onclick="scrollToSection(1)">
+    <span>↓</span>
+    <small>SCROLL</small>
+  </div>
+</section>
+
+<!-- ════════════════════════════
+     SECTION 2 — WISHES
+═════════════════════════════ -->
+<section id="sec-wishes">
+  <h2 class="sec-title">Birthday Wishes for Ifra 💝</h2>
+  <div class="wish-grid">
+    <div class="wish-card" onclick="sparkCard(this)">
+      <span class="wc-emoji">🌸</span>
+      <div class="wc-title">محبت اور خوشی</div>
+      <div class="wc-text">آپ کی زندگی میں ہمیشہ رنگین موسم رہے، خوشیوں کا بہار رہے!</div>
+    </div>
+    <div class="wish-card" onclick="sparkCard(this)">
+      <span class="wc-emoji">⭐</span>
+      <div class="wc-title">چمک اور شان</div>
+      <div class="wc-text">آپ ہر جگہ روشنی پھیلاتی ہو، ستاروں کی طرح تمیزے!</div>
+    </div>
+    <div class="wish-card" onclick="sparkCard(this)">
+      <span class="wc-emoji">🎁</span>
+      <div class="wc-title">خواب پورے ہوں</div>
+      <div class="wc-text">آپ کے ہر خواب کو پر لگے، زندگی میں ہمیشہ جیت کا تاج ہو!</div>
+    </div>
+    <div class="wish-card" onclick="sparkCard(this)">
+      <span class="wc-emoji">🦋</span>
+      <div class="wc-title">نئی شروعات</div>
+      <div class="wc-text">اِس سال نئے مواقع اور خوبصورت لمحے آپ کے لیے منتظر ہیں!</div>
+    </div>
+    <div class="wish-card" onclick="sparkCard(this)">
+      <span class="wc-emoji">🌙</span>
+      <div class="wc-title">اللہ کی برکت</div>
+      <div class="wc-text">اللہ آپ کو خوشیوں سے نوازے، صحت و خوشبختی کے ساتھ رکھے!</div>
+    </div>
+    <div class="wish-card" onclick="sparkCard(this)">
+      <span class="wc-emoji">💫</span>
+      <div class="wc-title">تم خصوصی ہو</div>
+      <div class="wc-text">دنیا آپ جیسی خوبصورت روح سے بہتر ہوتی ہے، ہمیشہ یہی رہو!</div>
+    </div>
+  </div>
+  <div class="scroll-down" style="position:relative;bottom:auto;transform:none;margin-top:2.5rem;" onclick="scrollToSection(2)">
+    <span>↓</span>
+    <small>SCROLL</small>
+  </div>
+</section>
+
+<!-- ════════════════════════════
+     SECTION 3 — FINAL MESSAGE
+═════════════════════════════ -->
+<section id="sec-final">
+  <div class="final-box">
+    <div class="final-emojis">
+      🎂 🎉 🎊 🎈 💖
+    </div>
+    <h2>میری جان اِفرا! 💕</h2>
+    <p>تم زندگی کی سب سے خوبصورت خوشبو ہو تمہاری ہنسی میں پوری دنیا بسی ہے اِس سال تمہارے لیے لاکھوں خوشیاں</p>
+    <div class="special-text">
+      ہمیشہ اِسی طرح خوش رہو! ✨
+    </div>
+  </div>
+</section>
+
+<!-- Balloon container -->
+<div id="balloons"></div>
+
+<script>
+// ── SECTIONS CONFIG ──────────────────────────────────
+const sections = [
+  {id:'sec-intro', label:'Birthday'},
+  {id:'sec-wishes', label:'Wishes'},
+  {id:'sec-final', label:'Message'},
+];
+
+// Build scroll nav dots
+const nav = document.getElementById('scrollNav');
+sections.forEach((s,i) => {
+  const d = document.createElement('div');
+  d.className = 'sn-dot' + (i===0?' active':'');
+  d.setAttribute('data-label', s.label);
+  d.onclick = () => scrollToSection(i);
+  nav.appendChild(d);
+});
+
+function scrollToSection(i){
+  document.getElementById(sections[i].id).scrollIntoView({behavior:'smooth'});
+}
+
+// Update active dot on scroll
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const i = sections.findIndex(s=>s.id===e.target.id);
+      document.querySelectorAll('.sn-dot').forEach((d,j)=>{
+        d.classList.toggle('active', j===i);
+      });
+    }
+  });
+},{threshold:0.5});
+sections.forEach(s=>obs.observe(document.getElementById(s.id)));
+
+// ── CURSOR ──────────────────────────────────────────
+const cur = document.getElementById('cursor');
+document.addEventListener('mousemove', e=>{
+  cur.style.left = e.clientX+'px';
+  cur.style.top = e.clientY+'px';
+});
+
+// ── STARFIELD BG ─────────────────────────────────────
+const bgC = document.getElementById('bgCanvas');
+const bgX = bgC.getContext('2d');
+let bW,bH,bStars=[];
+function resizeBg(){
+  bW=bgC.width=innerWidth; bH=bgC.height=innerHeight;
+}
+resizeBg(); window.addEventListener('resize',resizeBg);
+for(let i=0;i<280;i++) bStars.push({
+  x:Math.random()*bW, y:Math.random()*bH,
+  r:Math.random()*2+.4, a:Math.random(),
+  sp:Math.random()*.015+.006, dx:(Math.random()-.5)*.14
+});
+function drawBg(){
+  bgX.clearRect(0,0,bW,bH);
+  bStars.forEach(s=>{
+    s.a+=s.sp; s.x+=s.dx;
+    if(s.x<0)s.x=bW; if(s.x>bW)s.x=0;
+    const al=Math.abs(Math.sin(s.a*Math.PI));
+    bgX.beginPath(); bgX.arc(s.x,s.y,s.r,0,Math.PI*2);
+    bgX.fillStyle=`rgba(255,220,100,${al*.9})`; bgX.fill();
+  });
+  requestAnimationFrame(drawBg);
+}
+drawBg();
+
+// ── BALLOONS ─────────────────────────────────────────
+const blCon = document.getElementById('balloons');
+const blEm  = ['🎈','🎊','🎀','💖','🌸','✨','💛','🦋','🎉','💝'];
+function spawnBl(){
+  const el=document.createElement('div');
+  el.className='bl';
+  el.textContent=blEm[Math.floor(Math.random()*blEm.length)];
+  el.style.left=(Math.random()*95)+'vw';
+  el.style.fontSize=(2.2+Math.random()*2.8)+'rem';
+  const d=9+Math.random()*12;
+  el.style.animationDuration=d+'s';
+  el.style.animationDelay=(Math.random()*5)+'s';
+  blCon.appendChild(el);
+  setTimeout(()=>el.remove(),(d+5)*1000);
+}
+for(let i=0;i<15;i++) setTimeout(spawnBl,i*700);
+setInterval(spawnBl,2400);
+
+// ── FLOATING HEARTS ──────────────────────────────────
+const hCon = document.getElementById('hearts');
+const heartEm = ['💖','💗','💓','💕','🩷','❤️','💝','💞'];
+function spawnHeart(){
+  const h=document.createElement('div');
+  h.className='fheart';
+  h.textContent=heartEm[Math.floor(Math.random()*heartEm.length)];
+  h.style.left=(Math.random()*95)+'%';
+  h.style.fontSize=(1.3+Math.random()*2)+'rem';
+  const d=7+Math.random()*8;
+  h.style.animationDuration=d+'s';
+  h.style.animationDelay=(Math.random()*3)+'s';
+  hCon.appendChild(h);
+  setTimeout(()=>h.remove(),(d+3)*1000);
+}
+for(let i=0;i<12;i++) setTimeout(spawnHeart,i*500);
+setInterval(spawnHeart,1700);
+
+// ── CONFETTI ─────────────────────────────────────────
+const cpColors=['#FFD700','#FF1493','#E0AAFF','#00FFFF','#FF69B4','#FF00FF'];
+function spawnCp(burst=false){
+  const el=document.createElement('div');
+  el.className='cp';
+  el.style.left=(Math.random()*100)+'vw';
+  el.style.background=cpColors[Math.floor(Math.random()*cpColors.length)];
+  el.style.width=(7+Math.random()*9)+'px';
+  el.style.height=(13+Math.random()*14)+'px';
+  el.style.borderRadius=Math.random()>.5?'50%':'3px';
+  const d=burst?2.8+Math.random()*4:4+Math.random()*7;
+  el.style.animationDuration=d+'s';
+  el.style.animationDelay=(burst?0:Math.random()*2.5)+'s';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),(d+3)*1000);
+}
+for(let i=0;i<50;i++) setTimeout(()=>spawnCp(),i*110);
+setInterval(()=>spawnCp(),900);
+
+function burstConfetti(){
+  for(let i=0;i<150;i++) setTimeout(()=>spawnCp(true),i*15);
+}
+
+// ── FIREWORKS ────────────────────────────────────────
+const fwC = document.getElementById('fwCanvas');
+const fwX = fwC.getContext('2d');
+let fwW,fwH,particles=[];
+function resizeFw(){fwW=fwC.width=innerWidth;fwH=fwC.height=innerHeight;}
+resizeFw(); window.addEventListener('resize',resizeFw);
+
+function launchFW(x,y){
+  const colors=['#FFD700','#FF1493','#00FFFF','#FF69B4','#FF00FF','#ffffff','#80ff72'];
+  for(let i=0;i<120;i++){
+    const ang=Math.random()*Math.PI*2;
+    const spd=2.8+Math.random()*8;
+    particles.push({
+      x,y,vx:Math.cos(ang)*spd,vy:Math.sin(ang)*spd,
+      life:1,decay:.01+Math.random()*.013,
+      r:2.8+Math.random()*4,
+      color:colors[Math.floor(Math.random()*colors.length)]
+    });
+  }
+}
+
+function drawFW(){
+  fwX.clearRect(0,0,fwW,fwH);
+  particles.forEach((p,i)=>{
+    p.x+=p.vx; p.y+=p.vy; p.vy+=.07; p.life-=p.decay;
+    if(p.life>0){
+      fwX.beginPath(); fwX.arc(p.x,p.y,p.r,0,Math.PI*2);
+      fwX.fillStyle=p.color; fwX.globalAlpha=p.life; fwX.fill();
+      fwX.globalAlpha=1;
+    }
+  });
+  particles=particles.filter(p=>p.life>0);
+  requestAnimationFrame(drawFW);
+}
+drawFW();
+
+let fwInterval=null;
+function startFW(){
+  fwInterval=setInterval(()=>{
+    launchFW(Math.random()*fwW, Math.random()*fwH*.7);
+  },220);
+  setTimeout(()=>{clearInterval(fwInterval);},10000);
+}
+
+// ── ENVELOPE OPEN ────────────────────────────────────
+let envOpened = false;
+function openEnvelope(){
+  if(envOpened)return;
+  envOpened=true;
+  document.getElementById('envelope').classList.add('opening');
+  setTimeout(()=>{
+    document.getElementById('envelopeContainer').classList.add('vanish');
+  },800);
+  setTimeout(()=>{spawnBl(); startFW();},1000);
+  setTimeout(()=>burstConfetti(),1400);
+}
+
+// ── WISH CARDS SPARKLE ───────────────────────────────
+function sparkCard(el){
+  el.style.transition='none';
+  el.style.transform='scale(1.1) translateY(-14px)';
+  el.style.boxShadow='0 40px 90px rgba(255,20,147,.8)';
+  el.style.borderColor='rgba(0,255,255,1)';
+  for(let i=0;i<7;i++) setTimeout(()=>{
+    const x=el.getBoundingClientRect().left + Math.random()*el.offsetWidth;
+    const y=el.getBoundingClientRect().top + Math.random()*el.offsetHeight;
+    launchFW(x,y);
+  },i*70);
+  setTimeout(()=>{
+    el.style.transition='transform .3s, box-shadow .3s, border-color .3s';
+    el.style.transform=''; el.style.boxShadow=''; el.style.borderColor='';
+  },700);
+}
+</script>
+</body>
+</html>
