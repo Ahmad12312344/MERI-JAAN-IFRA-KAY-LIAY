@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Ifra 🎂 - Premium Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,400;0,700&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --primary-bg: #1a0b2e;
+  --secondary-bg: #2d1445;
+  --soft-pink: #ffb6c1;
+  --rose: #ff69b4;
+  --gold: #ffd700;
+  --text-light: #fff0f5;
+}
+
+html{scroll-behavior:smooth;scroll-snap-type:y mandatory;}
+body{
+  background: linear-gradient(135deg, var(--primary-bg) 0%, #0d0015 50%, var(--secondary-bg) 100%);
+  font-family:'Quicksand',sans-serif;
+  overflow-x:hidden;
+  color: var(--text-light);
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><text y='20' font-size='20'>✨</text></svg>") 12 12, auto;
+}
+
+/* ── MAGICAL GIF OVERLAY (Background Stars) ── */
+.gif-overlay {
+  position: fixed; inset: 0; z-index: -1; opacity: 0.25; pointer-events: none;
+  background-image: url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGplNTY1YzFxZTNlcWF6OG1sOTJwYnhqejZjemRianBidG9xcmh1ayZlcD12MV9naWZzX3NlYXJjaCZjdD1n/qThTPS43uoeVW/giphy.gif');
+  background-size: cover; background-position: center; mix-blend-mode: screen;
+}
+
+/* ── SOFT GLOWING BACKGROUND ORBS ── */
+.bg-orbs {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: -2; overflow: hidden; pointer-events: none;
+}
+.orb {
+  position: absolute; border-radius: 50%; filter: blur(60px);
+  animation: floatOrb 15s infinite alternate ease-in-out; opacity: 0.5;
+}
+.orb:nth-child(1) { width: 300px; height: 300px; background: #ff69b4; top: 10%; left: 20%; }
+.orb:nth-child(2) { width: 400px; height: 400px; background: #9370db; bottom: 10%; right: 10%; animation-delay: -5s; }
+.orb:nth-child(3) { width: 250px; height: 250px; background: #00ffff; top: 40%; left: 60%; animation-delay: -10s; }
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(50px, 50px) scale(1.2); }
+}
+
+/* ── ENVELOPE MODAL ── */
+.envelope-overlay {
+    position: fixed; inset: 0; background: rgba(13, 0, 21, 0.9); backdrop-filter: blur(10px);
+    z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center;
+    transition: opacity 1s ease, visibility 1s;
+}
+.envelope-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.envelope-container{ perspective:1200px; cursor:pointer; }
+.envelope-small{
+  width:320px; height:230px; position:relative; transform-style:preserve-3d;
+  animation:floatEnvelope 3s ease-in-out infinite; transition: transform 0.8s ease;
+}
+@keyframes floatEnvelope{
+  0%,100%{transform:translateY(0) rotate(-2deg);}
+  50%{transform:translateY(-15px) rotate(2deg);}
+}
+.env-body{
+  position:absolute;inset:0; background:linear-gradient(145deg, #ff8da1, #ff69b4);
+  border-radius:12px; border:2px solid #ffd700;
+  box-shadow:0 20px 60px rgba(255,105,180,0.6), inset 0 0 15px rgba(255,215,0,0.5); overflow:hidden;
+}
+.env-left{ position:absolute;top:0;left:0;width:50%;height:100%; background:linear-gradient(135deg, #ff9eb5, #ff69b4); clip-path:polygon(0 0,0 100%,100% 50%); }
+.env-right{ position:absolute;top:0;right:0;width:50%;height:100%; background:linear-gradient(225deg, #ff9eb5, #ff69b4); clip-path:polygon(100% 0,100% 100%,0 50%); }
+.env-bottom{ position:absolute;bottom:0;left:0;right:0;height:60%; background:linear-gradient(160deg, #ffb6c1, #ff69b4); clip-path:polygon(0 100%,50% 0,100% 100%); }
+.env-top{
+  position:absolute;top:0;left:0;right:0; height:55%; background:linear-gradient(180deg, #ff8da1, #ffb6c1);
+  clip-path:polygon(0 0,100% 0,50% 100%); transform-origin:top center;
+  transition:transform 1.3s cubic-bezier(.34,1.56,.64,1); z-index:10;
+}
+.envelope-small.opening { transform: scale(1.1); }
+.envelope-small.opening .env-top{ transform:rotateX(-180deg) translateY(20px); opacity: 0; }
+.seal{
+  position:absolute;top:35%;left:50%; transform:translate(-50%,-50%);
+  width:65px;height:65px; background:linear-gradient(135deg, #ffd700, #ff69b4); border-radius:50%;
+  display:flex;align-items:center;justify-content:center; font-size:2rem;
+  box-shadow:0 0 25px rgba(255,215,0,0.8); z-index:20; transition:opacity .4s, transform 0.4s;
+  border:3px solid #fff; color: white; text-shadow: 0 0 5px #ff69b4;
+}
+.envelope-small.opening .seal{ opacity:0; transform:scale(0); }
+.envelope-hint{
+  position:absolute;bottom:-60px; left:50%; transform:translateX(-50%);
+  color:var(--gold); font-size:1.3rem; font-weight:700; letter-spacing:3px;
+  animation:pulseText 1.5s infinite; text-shadow: 0 0 15px rgba(255,215,0,0.6); width: max-content;
+}
+@keyframes pulseText{0%,100%{opacity:.6;}50%{opacity:1; transform:translateX(-50%) scale(1.05);}}
+
+/* ── SECTIONS ── */
+section{
+  min-height:100vh; scroll-snap-align:start; position:relative; z-index:1;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:4rem 2rem; overflow: hidden;
+}
+
+/* SECTION 1 - TITLE */
+.intro-content { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 5; }
+
+/* Cute GIF Floating Side (Previous) */
+.gif-floating { 
+  position: absolute; top: 10px; left: -100px; width: 130px; 
+  opacity: 0.9; animation: floatEmoji 4s ease-in-out infinite; 
+  border-radius: 10px; mix-blend-mode: lighten;
+}
+
+/* NEW: Love You GIF (Above Title) */
+.love-you-gif {
+  width: 220px;
+  margin-bottom: -15px; /* Pulls it closer to the text */
+  animation: pulseText 3s ease-in-out infinite;
+  z-index: 10;
+  mix-blend-mode: lighten;
+}
+
+.big-title{
+  font-family:'Dancing Script',cursive; font-size:clamp(3.5rem,15vw,9rem);
+  background:linear-gradient(90deg, #ffb6c1, #ffd700, #ff69b4, #00ffff);
+  background-size:300% 300%; -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  animation:gradShift 5s ease infinite; font-weight:700;
+  text-shadow:0 0 40px rgba(255,105,180,0.5); margin-bottom:1rem; text-align: center;
+  position: relative; z-index: 5;
+}
+@keyframes gradShift{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+
+.big-subtitle{
+  font-family:'Scheherazade New',serif; font-size:clamp(1.5rem,4vw,2.5rem);
+  color:var(--gold); font-weight:700; margin-bottom:1rem; text-align: center;
+  text-shadow: 0 0 15px rgba(255,215,0,0.5);
+}
+.intro-jaan{
+  font-family:'Scheherazade New',serif; font-size:clamp(1.5rem,5vw,3rem);
+  color:#00ffff; font-weight:700; text-shadow:0 0 25px rgba(0,255,255,0.6); text-align: center;
+}
+
+/* SECTION 2 - WISH CARDS */
+/* NEW: Cute Bear GIF near Wishes */
+.wishes-bear-gif {
+  position: absolute; top: 5%; right: 5%; width: 140px;
+  animation: floatEnvelope 5s ease-in-out infinite;
+  mix-blend-mode: lighten; z-index: 2; opacity: 0.85;
+}
+
+.sec-title{
+  font-family:'Dancing Script',cursive; font-size:clamp(2.8rem,8vw,4.5rem); text-align:center;
+  color: var(--soft-pink); text-shadow: 0 0 20px rgba(255,182,193,0.6); margin-bottom:3rem;
+  position: relative; z-index: 5;
+}
+.wish-grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:2.5rem; max-width:1050px; width:100%; position: relative; z-index: 5;
+}
+.wish-card{
+  background:rgba(255, 255, 255, 0.08); border:2px solid rgba(255,182,193,0.4);
+  border-radius:30px; padding:2.5rem 2rem; text-align:center; cursor:pointer;
+  transition:all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter:blur(12px); position:relative; overflow:hidden;
+}
+.wish-card:hover{
+  transform:translateY(-12px) scale(1.05);
+  background:rgba(255, 182, 193, 0.15); border-color:var(--gold);
+  box-shadow:0 25px 50px rgba(255,105,180,0.3), 0 0 20px rgba(255,215,0,0.4);
+}
+.wc-emoji{ font-size:3.5rem; display:block; margin-bottom:1rem; animation: floatEmoji 3s ease-in-out infinite; }
+@keyframes floatEmoji { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-12px);} }
+.wc-title{ font-family:'Scheherazade New',serif; font-size:1.6rem; color:var(--soft-pink); font-weight:700; margin-bottom:.5rem; }
+.wc-text{ font-family:'Scheherazade New',serif; font-size:1.1rem; color:#f0f0f0; line-height:1.8; }
+
+/* SECTION 3 - FINAL MESSAGE */
+.final-content {
+  display: flex; flex-direction: column; align-items: center; gap: 2rem; position: relative; z-index: 5;
+}
+/* NEW: Celebration/Confetti GIF at bottom left */
+.celebration-gif {
+  position: absolute; bottom: 5%; left: 5%; width: 160px;
+  animation: floatEmoji 6s ease-in-out infinite;
+  mix-blend-mode: lighten; z-index: 2; opacity: 0.9;
+}
+
+/* AI Generated Cake Image Styling */
+.ai-cake-image {
+  max-width: 350px; width: 100%; border-radius: 25px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.5), 0 0 30px rgba(255,105,180,0.6), 0 0 50px rgba(255,215,0,0.3);
+  border: 4px solid var(--gold);
+  animation: floatEmoji 5s ease-in-out infinite;
+  object-fit: cover;
+}
+
+.final-box{
+  background:rgba(255, 255, 255, 0.08); border:2px solid var(--soft-pink);
+  border-radius:40px; padding:4rem 3rem; max-width:800px; width:100%;
+  text-align:center; backdrop-filter:blur(15px);
+  box-shadow:0 30px 60px rgba(0,0,0,0.4), inset 0 0 20px rgba(255,182,193,0.2);
+  position: relative;
+}
+.final-emojis{ font-size:3rem; margin-bottom:2rem; }
+.final-emojis span { display: inline-block; animation: heartBeat 1.5s infinite; margin: 0 5px; }
+.final-emojis span:nth-child(even) { animation-delay: 0.2s; }
+@keyframes heartBeat { 0%,100%{transform:scale(1);} 20%{transform:scale(1.2) rotate(5deg);} 40%{transform:scale(1);} 60%{transform:scale(1.2) rotate(-5deg);} }
+
+.final-box h2{ font-family:'Scheherazade New',serif; font-size:clamp(2.2rem,6vw,3.8rem); color:var(--gold); margin-bottom:1.5rem; text-shadow: 0 0 20px rgba(255,215,0,0.5);}
+.final-box p{ font-family:'Scheherazade New',serif; font-size:clamp(1.3rem,3.5vw,2rem); color:#fff; line-height:2.2; margin-bottom:2rem; }
+.special-text{ font-family:'Scheherazade New',serif; font-size:clamp(1.6rem,5vw,2.5rem); color:#00ffff; font-weight:700; text-shadow:0 0 20px rgba(0,255,255,0.6); }
+
+/* ── CUTE ANIMATIONS (Petals & Bursts) ── */
+.petal {
+  position: fixed; top: -10%; background: #ffb6c1; border-radius: 50% 0 50% 0;
+  pointer-events: none; z-index: 998; opacity: 0.8;
+  animation: fall linear forwards; box-shadow: 0 0 10px rgba(255,182,193,0.5);
+}
+@keyframes fall {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translate(150px, 110vh) rotate(720deg); opacity: 0; }
+}
+
+.click-heart {
+  position: absolute; pointer-events: none; z-index: 9999;
+  animation: floatUpBurst 1s ease-out forwards;
+}
+@keyframes floatUpBurst {
+  0% { transform: translate(0, 0) scale(0.5); opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(1.8); opacity: 0; filter: blur(1px); }
+}
+
+</style>
+</head>
+<body>
+
+<div class="gif-overlay"></div>
+
+<div class="bg-orbs">
+  <div class="orb"></div><div class="orb"></div><div class="orb"></div>
+</div>
+
+<div class="envelope-overlay" id="envelopeOverlay">
+    <div class="envelope-container" onclick="openEnvelope()">
+      <div class="envelope-small" id="envelope">
+        <div class="env-body">
+            <div class="env-left"></div>
+            <div class="env-right"></div>
+            <div class="env-bottom"></div>
+        </div>
+        <div class="env-top"></div>
+        <div class="seal">💖</div>
+      </div>
+      <div class="envelope-hint">Tap to Open Magic</div>
+    </div>
+</div>
+
+<section id="sec-intro">
+  <div class="intro-content">
+    
+    <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZHVjZm93MWMyNzJzbXY0Z3R5M3J5d3doamQ3aW5pdmZxMjJhcXFkcyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/a5rRO4IIy7oxma800y/giphy.gif" class="gif-floating" alt="Animated GIF">
+    
+    <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3N3NwYTBza21rZ2oyZWNlNG5uOGtra3BkczAwamZyY3c2cGpqMzYwcyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/WmJTjWGbhaSYfoEUaN/giphy.gif" class="love-you-gif" alt="Love You GIF">
+
+    <h1 class="big-title">Happy Birthday</h1>
+    <p class="big-subtitle">My Lifeline</p>
+    <p class="intro-jaan">🌸 اِفرا 🌸</p>
+  </div>
+</section>
+
+<section id="sec-wishes">
+  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbThseXI2ZjluOWozcjN5bDByZmI0anB2OWo5Z2Z4NnB1N2V0NTI4cCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ytu2GUYbvhz7zShGwS/giphy.gif" class="wishes-bear-gif" alt="Cute Bear">
+
+  <h2 class="sec-title">Birthday Wishes for Ifra 💝</h2>
+  <div class="wish-grid">
+    <div class="wish-card" onclick="cuteBurst(event, this)">
+      <span class="wc-emoji">🌸</span>
+      <div class="wc-title">محبت اور خوشی</div>
+      <div class="wc-text">آپ کی زندگی میں ہمیشہ رنگین موسم رہے، خوشیوں کا بہار رہے!</div>
+    </div>
+    <div class="wish-card" onclick="cuteBurst(event, this)">
+      <span class="wc-emoji">⭐</span>
+      <div class="wc-title">چمک اور شان</div>
+      <div class="wc-text">آپ ہر جگہ روشنی پھیلاتی ہو، ستاروں کی طرح تمیزے!</div>
+    </div>
+    <div class="wish-card" onclick="cuteBurst(event, this)">
+      <span class="wc-emoji">🎁</span>
+      <div class="wc-title">خواب پورے ہوں</div>
+      <div class="wc-text">آپ کے ہر خواب کو پر لگے، زندگی میں ہمیشہ جیت کا تاج ہو!</div>
+    </div>
+    <div class="wish-card" onclick="cuteBurst(event, this)">
+      <span class="wc-emoji">🦋</span>
+      <div class="wc-title">نئی شروعات</div>
+      <div class="wc-text">اِس سال نئے مواقع اور خوبصورت لمحے آپ کے لیے منتظر ہیں!</div>
+    </div>
+    <div class="wish-card" onclick="cuteBurst(event, this)">
+      <span class="wc-emoji">🌙</span>
+      <div class="wc-title">اللہ کی برکت</div>
+      <div class="wc-text">اللہ آپ کو خوشیوں سے نوازے، صحت و خوشبختی کے ساتھ رکھے!</div>
+    </div>
+    <div class="wish-card" onclick="cuteBurst(event, this)">
+      <span class="wc-emoji">💫</span>
+      <div class="wc-title">تم خصوصی ہو</div>
+      <div class="wc-text">دنیا آپ جیسی خوبصورت روح سے بہتر ہوتی ہے، ہمیشہ یہی رہو!</div>
+    </div>
+  </div>
+</section>
+
+<section id="sec-final">
+  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbThseXI2ZjluOWozcjN5bDByZmI0anB2OWo5Z2Z4NnB1N2V0NTI4cCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/PFjXmKuwQsS9q/giphy.gif" class="celebration-gif" alt="Celebration Confetti">
+
+  <div class="final-content">
+    
+    <img src="ifra-cake.jpg" alt="Beautiful Ifra Cake" class="ai-cake-image" onerror="this.style.display='none'">
+
+    <div class="final-box">
+      <div class="final-emojis">
+        <span>🎂</span><span>🎉</span><span>🎊</span><span>🎈</span><span>💖</span>
+      </div>
+      <h2>میری جان اِفرا! 💕</h2>
+      <p>تم زندگی کی سب سے خوبصورت خوشبو ہو تمہاری ہنسی میں پوری دنیا بسی ہے اِس سال تمہارے لیے لاکھوں خوشیاں</p>
+      <div class="special-text">
+        ہمیشہ اِسی طرح خوش رہو! ✨
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+let envOpened = false;
+
+function openEnvelope() {
+  if(envOpened) return; 
+  envOpened = true;
+  document.getElementById('envelope').classList.add('opening');
+  
+  // Cute burst of emojis on open
+  for(let i=0; i<20; i++) {
+    setTimeout(() => spawnFloatingEmoji(innerWidth/2, innerHeight/2), i*80);
+  }
+
+  setTimeout(() => {
+    document.getElementById('envelopeOverlay').classList.add('hidden');
+    startCuteAnimations();
+  }, 1200);
+}
+
+// ── CUTE SOFT ANIMATIONS ──
+function startCuteAnimations() {
+  setInterval(createPetal, 500); // Soft falling petals
+}
+
+function createPetal() {
+  const petal = document.createElement('div');
+  petal.className = 'petal';
+  petal.style.left = Math.random() * 100 + 'vw';
+  const size = Math.random() * 12 + 6;
+  petal.style.width = size + 'px';
+  petal.style.height = size + 'px';
+  petal.style.animationDuration = (Math.random() * 6 + 4) + 's';
+  document.body.appendChild(petal);
+  setTimeout(() => petal.remove(), 10000);
+}
+
+// ── CUTE CLICK BURST ON CARDS ──
+const cuteEmojis = ['💖', '✨', '🌸', '🎀', '🦋', '🌟'];
+
+function cuteBurst(e, card) {
+  card.style.transform = 'scale(1.08) translateY(-15px)';
+  setTimeout(() => card.style.transform = '', 400);
+
+  const rect = card.getBoundingClientRect();
+  const x = e.clientX || rect.left + rect.width / 2;
+  const y = e.clientY || rect.top + rect.height / 2;
+
+  const burstCount = 8 + Math.floor(Math.random() * 5);
+  for(let i=0; i<burstCount; i++) {
+    spawnFloatingEmoji(x, y);
+  }
+}
+
+function spawnFloatingEmoji(x, y) {
+  const el = document.createElement('div');
+  el.className = 'click-heart';
+  el.textContent = cuteEmojis[Math.floor(Math.random() * cuteEmojis.length)];
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  el.style.fontSize = (1.5 + Math.random()) + 'rem';
+  
+  const tx = (Math.random() - 0.5) * 200 + 'px';
+  const ty = (Math.random() - 1) * 200 + 'px';
+  el.style.setProperty('--tx', tx);
+  el.style.setProperty('--ty', ty);
+  
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1000);
+}
+</script>
+</body>
+</html>
